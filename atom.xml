@@ -1,15 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://blog.liangsheng8708.ltd</id>
-    <title> 凉生丶因源 的个人博客</title>
-    <updated>2021-11-16T01:57:42.672Z</updated>
+    <title> 凉生丶因源 的博客</title>
+    <updated>2021-11-17T10:57:33.274Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://blog.liangsheng8708.ltd"/>
     <link rel="self" href="https://blog.liangsheng8708.ltd/atom.xml"/>
     <subtitle>凉生丶因源</subtitle>
     <logo>https://blog.liangsheng8708.ltd/images/avatar.png</logo>
     <icon>https://blog.liangsheng8708.ltd/favicon.ico</icon>
-    <rights>All rights reserved 2021,  凉生丶因源 的个人博客</rights>
+    <rights>All rights reserved 2021,  凉生丶因源 的博客</rights>
+    <entry>
+        <title type="html"><![CDATA[😀笑脸漏洞详解]]></title>
+        <id>https://blog.liangsheng8708.ltd/post/xiao-lian-lou-dong-xiang-jie/</id>
+        <link href="https://blog.liangsheng8708.ltd/post/xiao-lian-lou-dong-xiang-jie/">
+        </link>
+        <updated>2021-11-17T10:12:11.000Z</updated>
+        <content type="html"><![CDATA[<p><strong>CVE-2011-2523</strong>，别名<strong>笑脸</strong>，起源于<strong>vsftpd2.3.4</strong>，也就是<strong>verysecureFTPdaemon</strong>的缩写，是一款FTP服务器，在代码中存在一个重大的问题，在文件<strong>srt.c</strong>中出现一段与程序无关的代码。</p>
+<pre>
+{
+return 1;
+}
+else if((p_str->p_buf[i]==0x3a)&&(p_str->p_buf[i+1]==0x29))
+{
+vsf_sysutil_extra();
+}
+return 0;
+}
+</pre>
+<p>这样一段代码是c语言实现的选择结构的代码，功能是如果数组p_buf第i个元素是0x3a,第i+1个元素的0x29，就会执行vsf_sysutil_extra()函数，而vsf_sysutil_extra其实功拿是一个建立socket连接的端口是6200。而我们如何去触发这个连接后门？在vsftpd-2.3.4的设计中服务端会接收客户端发过来的用户名和密码，而用户名就存放在p_buf的数组中，所以我们只要在登录的时候输入0x3a0x29就会去触发这个socket连接后门。<br>
+之所以说笑脸漏洞，是因为0x3a0x29的字符是<strong> ：） </strong></p>
+<hr />
+<h2>实战演练</h2>
+<pre>
+攻击机：kali（10.168.1.160）
+靶    机：msfadmin（10.168.1.177）
+</pre>
+先使用<strong>nmap</strong>扫描靶机信息
+![](https://blog.liangsheng8708.ltd/post-images/1637146265400.png)
+确认<strong>vsftpd</strong>版本为<strong>2.3.4</strong>，则进入下一步操作
+<hr />
+<h3>一般笑脸漏洞有两种渗透方法</h3>
+<h4>方法一</h4>（推荐）
+使用<strong>telnet</strong>连接靶机的ftp服务器
+<pre>
+telnet 10.168.1.177 21
+</pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Hello Gridea]]></title>
         <id>https://blog.liangsheng8708.ltd/post/hello-gridea/</id>

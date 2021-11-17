@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>Gridea |  凉生丶因源 的博客</title>
+<title>😀笑脸漏洞详解 |  凉生丶因源 的博客</title>
 <meta name="description" content="凉生丶因源">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -23,6 +23,7 @@
 
   </head>
   <body>
+  
     <nav class="navbar border fixed split-nav">
   <div class="nav-brand">
     <h3><a href="https://blog.liangsheng8708.ltd"> 凉生丶因源 的博客</a></h3>
@@ -79,42 +80,65 @@
     <div id="top" class="row site">
       <div class="sm-12 md-8 col">
         <div class="paper">
-          <h2 class="current-tag">标签: Gridea</h2>
-          
-  <article class="article">
-    <h2 class="article-title">
-      <a href="https://blog.liangsheng8708.ltd/post/hello-gridea/">Hello Gridea</a>
-    </h2>
-    <p class="article-meta">
-      2018-12-12
-      
-        <a href="https://blog.liangsheng8708.ltd/tag/S9s6RPYL-/" class="badge secondary">
-          Gridea
-        </a>
-      
-    </p>
-    <p class="text-lead">
-      <p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
-✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
+          <article class="article">
+            <h1>😀笑脸漏洞详解</h1>
+            <p class="article-meta">
+              2021-11-17
+              
+            </p>
+            
+            <div class="post-content">
+              <p><strong>CVE-2011-2523</strong>，别名<strong>笑脸</strong>，起源于<strong>vsftpd2.3.4</strong>，也就是<strong>verysecureFTPdaemon</strong>的缩写，是一款FTP服务器，在代码中存在一个重大的问题，在文件<strong>srt.c</strong>中出现一段与程序无关的代码。</p>
+<pre>
+{
+return 1;
+}
+else if((p_str->p_buf[i]==0x3a)&&(p_str->p_buf[i+1]==0x29))
+{
+vsf_sysutil_extra();
+}
+return 0;
+}
+</pre>
+<p>这样一段代码是c语言实现的选择结构的代码，功能是如果数组p_buf第i个元素是0x3a,第i+1个元素的0x29，就会执行vsf_sysutil_extra()函数，而vsf_sysutil_extra其实功拿是一个建立socket连接的端口是6200。而我们如何去触发这个连接后门？在vsftpd-2.3.4的设计中服务端会接收客户端发过来的用户名和密码，而用户名就存放在p_buf的数组中，所以我们只要在登录的时候输入0x3a0x29就会去触发这个socket连接后门。<br>
+之所以说笑脸漏洞，是因为0x3a0x29的字符是<strong> ：） </strong></p>
+<hr />
+<h2>实战演练</h2>
+<pre>
+攻击机：kali（10.168.1.160）
+靶    机：msfadmin（10.168.1.177）
+</pre>
+先使用<strong>nmap</strong>扫描靶机信息
+![](https://blog.liangsheng8708.ltd/post-images/1637146265400.png)
+确认<strong>vsftpd</strong>版本为<strong>2.3.4</strong>，则进入下一步操作
+<hr />
+<h3>一般笑脸漏洞有两种渗透方法</h3>
+<h4>方法一</h4>（推荐）
+使用<strong>telnet</strong>连接靶机的ftp服务器
+<pre>
+telnet 10.168.1.177 21
+</pre>
 
-    </p>
-    <div class="row">
-      <a href="https://blog.liangsheng8708.ltd/post/hello-gridea/" class="readmore-link">
-        <button>
-          Read More
-        </button>
-      </a>
-    </div>
-  </article>
-
-
+            </div>
+          </article>
         </div>
-        <div class="row flex-edges">
-  
-  
-</div>
-
+        <div class="paper" data-aos="fade-in">
+          
+            <div class="next-post">
+              <div class="next">
+                下一篇
+              </div>
+              <a href="https://blog.liangsheng8708.ltd/post/hello-gridea/">
+                <h3 class="post-title">
+                  Hello Gridea
+                </h3>
+              </a>
+            </div>
+          
+        </div>
+        
       </div>
+
       <div class="sm-12 md-4 col sidebar">
   <div class="paper info-container">
     <img src="https://blog.liangsheng8708.ltd/images/avatar.png?v=1637146604373" class="no-responsive avatar">
@@ -177,6 +201,7 @@
     Powered by <a href="https://github.com/liangsheng8708/" target="_blank">凉生丶因源</a> | <a class="rss" href="https://blog.liangsheng8708.ltd/atom.xml" target="_blank">RSS</a>
   </div>
 </div>
+
 
     </div>
 
