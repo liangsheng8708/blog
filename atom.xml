@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://blog.liangsheng8708.ltd</id>
     <title> 凉生丶因源 的博客</title>
-    <updated>2021-11-17T11:45:34.202Z</updated>
+    <updated>2021-11-17T11:48:23.705Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://blog.liangsheng8708.ltd"/>
     <link rel="self" href="https://blog.liangsheng8708.ltd/atom.xml"/>
@@ -34,7 +34,7 @@ return 0;
 <h2>实战演练</h2>
 <pre>
 攻击机：kali（10.168.1.160）
-靶    机：msfadmin（10.168.1.177）
+靶  机：msfadmin（10.168.1.177）
 </pre>
 先使用<strong>nmap</strong>扫描靶机信息
 <img src="https://blog.liangsheng8708.ltd/post-images/1637146265400.png" />
